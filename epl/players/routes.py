@@ -23,13 +23,15 @@ def new_player():
     img = request.form['img']
     club_id = int(request.form['club_id'])
 
-    #  เพิ่ม clean_sheets — บันทึกเฉพาะ Goalkeeper เท่านั้น
-    clean_sheets = request.form.get('clean_sheets')
-    clean_sheets = int(clean_sheets) if position == 'Goalkeeper' and clean_sheets else None
+    # clean_sheets เฉพาะ Goalkeeper เท่านั้น ตำแหน่งอื่น = None
+    clean_sheets = None
+    if position == 'Goalkeeper':
+      cs_val = request.form.get('clean_sheets', '').strip()
+      clean_sheets = int(cs_val) if cs_val != '' else 0
 
     player = Player(name=name, position=position, nationality=nationality,
-                    goals=goals, squad_no=squad_no, img=img, club_id=club_id,
-                    clean_sheets=clean_sheets)
+                    goals=goals, squad_no=squad_no, img=img,
+                    club_id=club_id, clean_sheets=clean_sheets)
     db.session.add(player)
     db.session.commit()
     flash('add new player successfully', 'success')
@@ -47,7 +49,7 @@ def search_player():
     return render_template('players/search_player.html',
                            title='Search Player Page',
                            players=players)
-  
+
 @player_bp.route('/<int:id>/info')
 def info_player(id):
   player = db.session.get(Player, id)
@@ -69,9 +71,11 @@ def update_player(id):
     img = request.form['img']
     club_id = int(request.form['club_id'])
 
-    # ✅ เพิ่ม clean_sheets — บันทึกเฉพาะ Goalkeeper เท่านั้น
-    clean_sheets = request.form.get('clean_sheets')
-    clean_sheets = int(clean_sheets) if position == 'Goalkeeper' and clean_sheets else None
+    # clean_sheets เฉพาะ Goalkeeper เท่านั้น ตำแหน่งอื่น reset เป็น None
+    clean_sheets = None
+    if position == 'Goalkeeper':
+      cs_val = request.form.get('clean_sheets', '').strip()
+      clean_sheets = int(cs_val) if cs_val != '' else 0
 
     player.name = name
     player.position = position
@@ -80,13 +84,13 @@ def update_player(id):
     player.squad_no = squad_no
     player.img = img
     player.club_id = club_id
-    player.clean_sheets = clean_sheets  #  เพิ่มบรรทัดนี้
+    player.clean_sheets = clean_sheets
 
     db.session.add(player)
     db.session.commit()
     flash('update player successfully', 'success')
     return redirect(url_for('players.index'))
-  
+
   return render_template('players/update_player.html',
                          title='Update Player Page',
                          player=player,

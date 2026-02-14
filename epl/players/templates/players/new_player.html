@@ -13,58 +13,77 @@
         <label for="name" class="form-label">Player Name</label>
         <input name="name" type="text" class="form-control" id="name" required>
       </div>
+
       <div class="mb-3">
         <label for="position" class="form-label">Select Position</label>
-        <select name="position" class="form-select" aria-label="Default select example">
+        <select name="position" id="position" class="form-select" onchange="toggleCleanSheets(this.value)">
           <option value="Goalkeeper">Goalkeeper</option>
           <option value="Defender">Defender</option>
           <option value="Midfielder">Midfielder</option>
           <option value="Forward">Forward</option>
         </select>
       </div>
+
+      {# --- Clean Sheets (เฉพาะ Goalkeeper) --- #}
+      <div class="mb-3" id="clean_sheets_group">
+        <label for="clean_sheets" class="form-label">
+          <i class="bi bi-shield-check text-success"></i>
+          Clean Sheets
+          <span class="badge bg-success ms-1">Goalkeeper only</span>
+        </label>
+        <input name="clean_sheets" type="number" min="0" class="form-control" id="clean_sheets" value="0">
+        <div class="form-text">จำนวนนัดที่ไม่เสียประตู (เฉพาะผู้รักษาประตู)</div>
+      </div>
+
       <div class="mb-3">
         <label for="nationality" class="form-label">Nationality</label>
         <input name="nationality" type="text" class="form-control" id="nationality" required>
       </div>
+
       <div class="mb-3">
         <label for="goals" class="form-label">Goals</label>
-        <input name="goals" type="number" class="form-control" id="goals" required>
+        <input name="goals" type="number" min="0" class="form-control" id="goals" value="0" required>
       </div>
+
       <div class="mb-3">
         <label for="squad_no" class="form-label">Squad Number</label>
-        <input name="squad_no" type="number" class="form-control" id="squad_no" required>
+        <input name="squad_no" type="number" min="1" class="form-control" id="squad_no" required>
       </div>
+
       <div class="mb-3">
         <label for="img" class="form-label">Image URL</label>
         <input name="img" type="text" class="form-control" id="img" required>
       </div>
 
-      <!--  เพิ่ม clean_sheets — แสดงตลอด routes.py จัดการเองเด้ออออ -->
-      <div class="mb-3">
-        <label for="clean_sheets" class="form-label">
-          Clean Sheets
-          <span class="badge bg-secondary">Goalkeeper เท่านั้น</span>
-        </label>
-        <input name="clean_sheets" type="number" class="form-control"
-               id="clean_sheets" min="0" placeholder="กรอกเฉพาะ Goalkeeper">
-        <div class="form-text text-muted">
-          ⚠️ ถ้าไม่ใช่ Goalkeeper ระบบจะบันทึกเป็น null ให้อัตโนมัติ
-        </div>
-      </div>
-
       <div class="mb-3">
         <label for="club_id" class="form-label">Select Club</label>
-        <select name="club_id" class="form-select" aria-label="Default select example">
+        <select name="club_id" class="form-select">
           {% for club in clubs %}
             <option value="{{club.id}}">{{club.name}}</option>
           {% endfor %}
-          
         </select>
       </div>
+
       <button type="submit" class="btn btn-outline-success">
         <i class="bi bi-folder-plus"></i>
         New Player
       </button>
     </form>
   </div>
+
+  <script>
+    function toggleCleanSheets(position) {
+      const group = document.getElementById('clean_sheets_group');
+      const input = document.getElementById('clean_sheets');
+      if (position === 'Goalkeeper') {
+        group.style.display = 'block';
+        input.value = input.value || 0;
+      } else {
+        group.style.display = 'none';
+        input.value = '';
+      }
+    }
+    // ตั้งค่าเริ่มต้นตาม option แรก
+    toggleCleanSheets(document.getElementById('position').value);
+  </script>
 {% endblock %}

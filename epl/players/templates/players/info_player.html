@@ -13,60 +13,82 @@
         <div class="card">
           <img src="{{player.img}}" alt="" class="img-thumbnail p-5">
           <div>
-            <h4 class="text-center text-success">
-              Player Photo
-            </h4>
+            <h4 class="text-center text-success">Player Photo</h4>
           </div>
         </div>
       </div>
+
       <div class="col-md-8 mt-3">
         <div class="card">
           <div class="card-body">
+
             <div class="row">
               <div class="col"><h2>Player Name</h2></div>
               <div class="col"><h2 class="text-secondary float-end">{{player.name}}</h2></div>
             </div>
             <hr>
+
             <div class="row">
               <div class="col"><h2>Position</h2></div>
-              <div class="col"><h2 class="text-secondary float-end">{{player.position}}</h2></div>
+              <div class="col">
+                <h2 class="float-end">
+                  {% if player.position == 'Goalkeeper' %}
+                    <span class="badge bg-warning text-dark fs-5">
+                      <i class="bi bi-shield-fill-check"></i> {{player.position}}
+                    </span>
+                  {% elif player.position == 'Defender' %}
+                    <span class="badge bg-primary fs-5">{{player.position}}</span>
+                  {% elif player.position == 'Midfielder' %}
+                    <span class="badge bg-success fs-5">{{player.position}}</span>
+                  {% else %}
+                    <span class="badge bg-danger fs-5">{{player.position}}</span>
+                  {% endif %}
+                </h2>
+              </div>
             </div>
             <hr>
+
             <div class="row">
               <div class="col"><h2>Nationality</h2></div>
               <div class="col"><h2 class="text-secondary float-end">{{player.nationality}}</h2></div>
             </div>
             <hr>
+
             <div class="row">
               <div class="col"><h2>Goals</h2></div>
               <div class="col"><h2 class="text-secondary float-end">{{player.goals}}</h2></div>
             </div>
             <hr>
+
+            {# --- Clean Sheets: แสดงเฉพาะ Goalkeeper --- #}
+            {% if player.position == 'Goalkeeper' %}
             <div class="row">
-              <div class="col"><h2>Squad Number</h2></div>
-              <div class="col"><h2 class="text-secondary float-end">{{player.squad_no}}</h2></div>
+              <div class="col">
+                <h2><i class="bi bi-shield-check text-success"></i> Clean Sheets</h2>
+              </div>
+              <div class="col">
+                <h2 class="float-end">
+                  <span class="badge bg-success fs-4">
+                    {{player.clean_sheets if player.clean_sheets is not none else 0}}
+                  </span>
+                </h2>
+              </div>
             </div>
             <hr>
-
-            <!-- ✅ เพิ่ม clean_sheets — แสดงเฉพาะ Goalkeeper -->
-            {% if player.position == 'Goalkeeper' %}
-              <div class="row">
-                <div class="col"><h2>Clean Sheets 🧤</h2></div>
-                <div class="col">
-                  <h2 class="text-secondary float-end">
-                    {{ player.clean_sheets if player.clean_sheets is not none else 0 }}
-                  </h2>
-                </div>
-              </div>
-              <hr>
             {% endif %}
+
+            <div class="row">
+              <div class="col"><h2>Squad Number</h2></div>
+              <div class="col"><h2 class="text-secondary float-end">#{{player.squad_no}}</h2></div>
+            </div>
+            <hr>
 
             <div class="row">
               <div class="col"><h2>Club</h2></div>
               <div class="col"><h2 class="text-secondary float-end">{{player.club.name}}</h2></div>
             </div>
             <hr>
-            
+
             <div class="row mt-5">
               <div class="col">
                 <a href="{{url_for('players.index')}}" class="btn btn-outline-success">
@@ -75,17 +97,16 @@
                 </a>
               </div>
               <div class="col">
-                <a href="{{url_for('players.update_player', id=player.id)}}" class="float-end btn btn-outline-success">
-                  <i class="bi bi-house-up-fill"></i>
+                <a href="{{url_for('players.update_player', id=player.id)}}" class="float-end btn btn-outline-warning">
+                  <i class="bi bi-pencil-square"></i>
                   Edit Player
                 </a>
               </div>
             </div>
-            <hr>
+
           </div>
         </div>
       </div>
     </div>
-    
   </div>
 {% endblock %}
