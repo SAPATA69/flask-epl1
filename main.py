@@ -1,7 +1,6 @@
 from epl import create_app, db
 
-# เปลี่ยนเป็น 'config.MySQLConfig' เมื่อต้องการใช้ MySQL (epl_v2_db)
-app = create_app('config.SQLiteConfig')
+app = create_app('config.MySQLConfig')  #  ต้องใช้  MySQL จำำำำำไว้้เด้ออออ
 
 if __name__ == '__main__':
     with app.app_context():

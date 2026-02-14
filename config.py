@@ -8,5 +8,5 @@ class SQLiteConfig(Config):
 
 
 class MySQLConfig(Config):
-    # ชื่อ database ตรงตามที่อาจารย์สอน (ดูจาก HeidiSQL ในรูป)
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/epl_v2_db'
+    # ชื่อ database  ดูจาก HeidiSQL ในรูป ฮาฟผม
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/epl_s02_db'
