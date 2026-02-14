@@ -23,8 +23,13 @@ def new_player():
     img = request.form['img']
     club_id = int(request.form['club_id'])
 
+    #  เพิ่ม clean_sheets — บันทึกเฉพาะ Goalkeeper เท่านั้น
+    clean_sheets = request.form.get('clean_sheets')
+    clean_sheets = int(clean_sheets) if position == 'Goalkeeper' and clean_sheets else None
+
     player = Player(name=name, position=position, nationality=nationality,
-                    goals=goals, squad_no=squad_no, img=img, club_id=club_id)
+                    goals=goals, squad_no=squad_no, img=img, club_id=club_id,
+                    clean_sheets=clean_sheets)
     db.session.add(player)
     db.session.commit()
     flash('add new player successfully', 'success')
@@ -64,6 +69,10 @@ def update_player(id):
     img = request.form['img']
     club_id = int(request.form['club_id'])
 
+    # ✅ เพิ่ม clean_sheets — บันทึกเฉพาะ Goalkeeper เท่านั้น
+    clean_sheets = request.form.get('clean_sheets')
+    clean_sheets = int(clean_sheets) if position == 'Goalkeeper' and clean_sheets else None
+
     player.name = name
     player.position = position
     player.nationality = nationality
@@ -71,6 +80,7 @@ def update_player(id):
     player.squad_no = squad_no
     player.img = img
     player.club_id = club_id
+    player.clean_sheets = clean_sheets  #  เพิ่มบรรทัดนี้
 
     db.session.add(player)
     db.session.commit()
@@ -81,4 +91,3 @@ def update_player(id):
                          title='Update Player Page',
                          player=player,
                          clubs=clubs)
-

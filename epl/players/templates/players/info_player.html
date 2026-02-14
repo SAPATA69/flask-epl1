@@ -47,6 +47,20 @@
               <div class="col"><h2 class="text-secondary float-end">{{player.squad_no}}</h2></div>
             </div>
             <hr>
+
+            <!-- ✅ เพิ่ม clean_sheets — แสดงเฉพาะ Goalkeeper -->
+            {% if player.position == 'Goalkeeper' %}
+              <div class="row">
+                <div class="col"><h2>Clean Sheets 🧤</h2></div>
+                <div class="col">
+                  <h2 class="text-secondary float-end">
+                    {{ player.clean_sheets if player.clean_sheets is not none else 0 }}
+                  </h2>
+                </div>
+              </div>
+              <hr>
+            {% endif %}
+
             <div class="row">
               <div class="col"><h2>Club</h2></div>
               <div class="col"><h2 class="text-secondary float-end">{{player.club.name}}</h2></div>

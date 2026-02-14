@@ -47,6 +47,26 @@
         <label for="img" class="form-label">Image URL</label>
         <input value="{{player.img}}" name="img" type="text" class="form-control" id="img" required>
       </div>
+
+      <!-- ✅ เพิ่ม clean_sheets — Jinja2 เช็ค position ถ้าไม่ใช่ GK ให้ disabled -->
+      <div class="mb-3">
+        <label for="clean_sheets" class="form-label">
+          Clean Sheets
+          <span class="badge bg-secondary">Goalkeeper เท่านั้น</span>
+        </label>
+        {% if player.position == 'Goalkeeper' %}
+          <input name="clean_sheets" type="number" class="form-control"
+                 id="clean_sheets" min="0"
+                 value="{{ player.clean_sheets if player.clean_sheets is not none else 0 }}">
+        {% else %}
+          <input type="number" class="form-control" id="clean_sheets"
+                 placeholder="ไม่ใช่ Goalkeeper" disabled>
+          <div class="form-text text-danger">
+            ตำแหน่งนี้ไม่มี Clean Sheets
+          </div>
+        {% endif %}
+      </div>
+
       <div class="mb-3">
         <label for="position" class="form-label">Select Club</label>
         <select name="club_id" class="form-select" aria-label="Default select example">
